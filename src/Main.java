@@ -1,4 +1,3 @@
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -14,11 +13,9 @@ public class Main {
                 + "\nЧисла и произведения должны лежать в границах от -2147483648 до 2147483647"
                 + RESET);
         System.out.println("Введите первое число = ");
-        try {
             int number1 = new Scanner(System.in).nextInt();
             System.out.println("Введите второе число = ");
             int number2 = new Scanner(System.in).nextInt();
-
             //Выполняем математические действия
             System.out.println(YELLOW + "Вычисление..." + RESET);
             int sum = number1 + number2;
@@ -27,22 +24,7 @@ public class Main {
             System.out.println("Разность(-) чисел = " + diff);
             int multi = number1 * number2;
                 System.out.println("Произведение(*) чисел = " + multi);
-            //Хотел описать что int переполнен и значение пошло от отрицательной границы
-//            else {
-//                System.out.println("Похоже, что произошло перепополнение");
-//            }
             double division = (double) number1 / number2;
-            //если частное целое, то отображаем только целое значение
-            if (division % 1 == 0) {
-                System.out.println("Частное чисел(/) = " + (int) division);
-            } else {
                 System.out.println("Частное чисел(/) = " + division);
-            }
-        } catch (InputMismatchException e) {
-            System.out.println(RED
-                    + "Числа и произведения должны лежать в границах от -2147483648 до 2147483647" +
-                    "\nПерезапустите программу"
-                    + RESET);
         }
-    }
-}
+        }
