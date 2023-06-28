@@ -1,5 +1,9 @@
 import java.io.*;
+import java.time.Period;
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
     public static void main(String[] args) throws Exceptions {
@@ -30,6 +34,8 @@ public class Main {
                 int lineNum = 0;
                 int longLine = 0;
                 int shortLine = 0;
+                int yandexBotCount=0;
+                int googleBotCount=0;
                 while ((line = reader.readLine()) != null) {
                     int length = line.length();
                     try {
@@ -51,10 +57,39 @@ public class Main {
                         System.out.println("Какая-то линия содержит более 1024 символов и была пропущена " + rte);
                         //System.exit(0);
                     }
+                    //user-agent
+                    String[] slashSeparator = line.split("\"");
+                    String userAgentSep=slashSeparator[slashSeparator.length-1];
+                    int openParenPosition = userAgentSep.indexOf("(");
+                    int closeParenPosition = userAgentSep.lastIndexOf(")");
+                    String firstBrackets = userAgentSep.substring(openParenPosition+1, closeParenPosition+1); //тут не понимаю как первую скобку оставить или последнюю удалить
+                    System.out.println(firstBrackets);
+                    //разделите эту часть по точке с запятой:
+                    String[] parts = firstBrackets.split(";");
+                    if (parts.length >= 2) {
+                        String fragment = parts[1];
+                        //очистьте от пробелов каждый получившийся фрагмент;
+                        fragment=fragment.replaceAll("\\s","");
+                        //возьмите второй фрагмент;
+                        //отделите в этом фрагменте часть до слэша.
+                        String[] withoutSlash=fragment.split("/");
+                        String bot=withoutSlash[0];
+                        System.out.println(bot);
+                        //Определяя равенство найденного фрагмента строкам GoogleBot или YandexBot,
+                        // подсчитывайте количество строк в файле, соответствующих запросам от данных ботов.
+                        if (bot.matches("YandexBot")) {
+                            yandexBotCount++;
+                        }
+                        if (bot.matches("GoogleBot")) {
+                            googleBotCount++;
+                        }
+                    }
                 }
                     System.out.println("Количество строк в файле: " + lineNum);
-                    System.out.println("Длина самой длинной строки в файле: " + longLine);
-                    System.out.println("Длина самой короткой строки в файле: " + shortLine);
+                double yandexBotsRequestsFract=(double)yandexBotCount/lineNum;
+                double googleBotsRequestsFract=(double)googleBotCount/lineNum;
+                System.out.println("Доля запросов от Яндекс ботов: " + yandexBotsRequestsFract);
+                System.out.println("Доля запросов от Гугл ботов: " + googleBotsRequestsFract);
                     System.out.println("Путь указан верно");
                     countFiles++;
                     System.out.println("Это файл номер " + countFiles);
