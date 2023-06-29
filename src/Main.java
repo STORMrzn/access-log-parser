@@ -58,11 +58,32 @@ public class Main {
                         //System.exit(0);
                     }
                     //user-agent
+                    String ipUser=line.split(" ")[0];
+                    //System.out.println(ipUser);//ip адрес выводится
+                    // не работаетString features=line.split("0",1)[0];
+                    //System.out.println(features);
+                    String dateAndTime=line.substring(line.indexOf("[")+1,line.indexOf("]"));
+                    //System.out.println(dateAndTime);
+                    String method=line.substring(line.indexOf("\"")+1, line.indexOf(" /"));
+                    //System.out.println(method);
+                    String splitStatusCode=line.substring(line.indexOf("\" ")+2);
+                    String[] splitStatusCodeToArray=splitStatusCode.split("\\s+");
+                    String statusCode=splitStatusCodeToArray[0];
+                    //System.out.println(statusCode); статус код
+                    String volumeOfBytes=splitStatusCodeToArray[1];
+                    //System.out.println(volumeOfBytes); байты
+                    String pathOfVisits=splitStatusCodeToArray[2];
+                    //System.out.println(pathOfVisits); путь к странице
+                    String[] splitToLast=splitStatusCode.split("\\s+\"");
+                    String splitUserAgent="\"" + splitToLast[2];
+                    //System.out.println(splitUserAgent); userAgent
+
                     String[] slashSeparator = line.split("\"");
                     String userAgentSep=slashSeparator[slashSeparator.length-1];
                     int openParenPosition = userAgentSep.indexOf("(");
                     int closeParenPosition = userAgentSep.lastIndexOf(")");
-                    String firstBrackets = userAgentSep.substring(openParenPosition+1, closeParenPosition+1); //тут не понимаю как первую скобку оставить или последнюю удалить
+                    System.out.println(userAgentSep);
+                    String firstBrackets = userAgentSep.substring(openParenPosition+1);
                     System.out.println(firstBrackets);
                     //разделите эту часть по точке с запятой:
                     String[] parts = firstBrackets.split(";");
@@ -80,7 +101,7 @@ public class Main {
                         if (bot.matches("YandexBot")) {
                             yandexBotCount++;
                         }
-                        if (bot.matches("GoogleBot")) {
+                        if (bot.matches("Googlebot")) {
                             googleBotCount++;
                         }
                     }
