@@ -57,26 +57,30 @@ public class Main {
                         System.out.println("Какая-то линия содержит более 1024 символов и была пропущена " + rte);
                         //System.exit(0);
                     }
+
+                    LogEntry le = new LogEntry(line);
+                    /*
                     //user-agent
-                    String ipUser=line.split(" ")[0];
-                    //System.out.println(ipUser);//ip адрес выводится
+                    String ipAddr=line.split(" ")[0];
+                    //System.out.println(ipAddr);//ip адрес выводится
                     // не работаетString features=line.split("0",1)[0];
                     //System.out.println(features);
-                    String dateAndTime=line.substring(line.indexOf("[")+1,line.indexOf("]"));
-                    //System.out.println(dateAndTime);
-                    String method=line.substring(line.indexOf("\"")+1, line.indexOf(" /"));
-                    //System.out.println(method);
+                    String LocalDateTime=line.substring(line.indexOf("[")+1,line.indexOf("]"));
+                    //System.out.println(LocalDateTime);
+                    String HttpMethod=line.substring(line.indexOf("\"")+1, line.indexOf(" /"));
+                    //System.out.println(HttpMethod);
                     String splitStatusCode=line.substring(line.indexOf("\" ")+2);
                     String[] splitStatusCodeToArray=splitStatusCode.split("\\s+");
-                    String statusCode=splitStatusCodeToArray[0];
+                    String responseCode=splitStatusCodeToArray[0];
                     //System.out.println(statusCode); статус код
-                    String volumeOfBytes=splitStatusCodeToArray[1];
-                    //System.out.println(volumeOfBytes); байты
-                    String pathOfVisits=splitStatusCodeToArray[2];
-                    //System.out.println(pathOfVisits); путь к странице
+                    String responseSize=splitStatusCodeToArray[1];
+                    //System.out.println(responseSize); байты
+                    String referer=splitStatusCodeToArray[2];
+                    //System.out.println(referer); путь к странице
                     String[] splitToLast=splitStatusCode.split("\\s+\"");
                     String splitUserAgent="\"" + splitToLast[2];
                     //System.out.println(splitUserAgent); userAgent
+                     */
 
                     String[] slashSeparator = line.split("\"");
                     String userAgentSep=slashSeparator[slashSeparator.length-1];
