@@ -1,18 +1,23 @@
 import java.util.Arrays;
 
 enum MethodsHTTP {
-    GET("GET"),POST("POST"),DELETE("DELETE"),OPTIONS("OPTIONS"),PUT("PUT"),HEAD("HEAD"),PATCH("PATCH"),TRACE("TRACE"),CONNECT("CONNECT");
-    private String method;
+    GET, POST, DELETE, OPTIONS, PUT, HEAD, PATCH, TRACE, CONNECT;
+    private String code;
 
-    MethodsHTTP(String method) {
-        this.method = method;
+    public static MethodsHTTP method(String x) {
+        MethodsHTTP ret = null;
+        for (MethodsHTTP code : MethodsHTTP.values()) {
+            if (code.getCode() == x)
+                ret = code;
+        }
+        return ret;
     }
 
-    public void setMethod(String method) {
-        this.method = method;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public MethodsHTTP getMethod() {
-        return new MethodsHTTP(method); //тут как-то создать объект енама по пришедшему стрингу
+    public String getCode() {
+        return code;
     }
 }

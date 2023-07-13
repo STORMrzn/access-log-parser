@@ -1,4 +1,5 @@
 import java.io.*;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -36,6 +37,8 @@ public class Main {
                 int shortLine = 0;
                 int yandexBotCount=0;
                 int googleBotCount=0;
+                long totalTraffic=0;
+                Statistics stat = new Statistics();
                 while ((line = reader.readLine()) != null) {
                     int length = line.length();
                     try {
@@ -44,7 +47,7 @@ public class Main {
                             lineNum++;
                             if (shortLine > length) {
                                 shortLine = length;
-                            };
+                            }
                             if (longLine < length) {
                                 longLine = length;
                             };
@@ -52,20 +55,26 @@ public class Main {
                         throw new RuntimeException();
                     }
                         } catch (RuntimeException rte) {
-                        //catch (Exteptions exc) {
-                        //exc.printStackTrace() - пытался сделать исключение в классе, но какие-то проблемы
+                       // catch (Exteptions exc) {
+                       // exc.printStackTrace()// - пытался сделать исключение в классе, но какие-то проблемы
                         System.out.println("Какая-то линия содержит более 1024 символов и была пропущена " + rte);
                         //System.exit(0);
                     }
 
                     LogEntry le = new LogEntry(line);
-                    /*
+                    totalTraffic += le.getResponseSize();
+                    LocalDateTime minTime = null;
+                    LocalDateTime maxTime = null;
+                    stat.addEntry(le);
+
+
                     //user-agent
                     String ipAddr=line.split(" ")[0];
                     //System.out.println(ipAddr);//ip адрес выводится
                     // не работаетString features=line.split("0",1)[0];
                     //System.out.println(features);
-                    String LocalDateTime=line.substring(line.indexOf("[")+1,line.indexOf("]"));
+                    String localDateTime1=line.substring(line.indexOf("[")+1,line.indexOf("]"));
+                    String localDateTime = localDateTime1.replaceAll("/", "-");
                     //System.out.println(LocalDateTime);
                     String HttpMethod=line.substring(line.indexOf("\"")+1, line.indexOf(" /"));
                     //System.out.println(HttpMethod);
@@ -77,18 +86,18 @@ public class Main {
                     //System.out.println(responseSize); байты
                     String referer=splitStatusCodeToArray[2];
                     //System.out.println(referer); путь к странице
+
                     String[] splitToLast=splitStatusCode.split("\\s+\"");
                     String splitUserAgent="\"" + splitToLast[2];
                     //System.out.println(splitUserAgent); userAgent
-                     */
+
 
                     String[] slashSeparator = line.split("\"");
                     String userAgentSep=slashSeparator[slashSeparator.length-1];
                     int openParenPosition = userAgentSep.indexOf("(");
                     int closeParenPosition = userAgentSep.lastIndexOf(")");
-                    System.out.println(userAgentSep);
+                    //System.out.println(userAgentSep);
                     String firstBrackets = userAgentSep.substring(openParenPosition+1);
-                    System.out.println(firstBrackets);
                     //разделите эту часть по точке с запятой:
                     String[] parts = firstBrackets.split(";");
                     if (parts.length >= 2) {
@@ -99,7 +108,6 @@ public class Main {
                         //отделите в этом фрагменте часть до слэша.
                         String[] withoutSlash=fragment.split("/");
                         String bot=withoutSlash[0];
-                        System.out.println(bot);
                         //Определяя равенство найденного фрагмента строкам GoogleBot или YandexBot,
                         // подсчитывайте количество строк в файле, соответствующих запросам от данных ботов.
                         if (bot.matches("YandexBot")) {
@@ -110,7 +118,15 @@ public class Main {
                         }
                     }
                 }
+                System.out.println("Всего трафика: "+totalTraffic);
+                System.out.println("minTime=  "+stat.getMinTime());
+                System.out.println("maxTime=  "+stat.getMaxTime());
+                System.out.println("трафик рейт "+stat.getTrafficRate(stat.getMinTime(), stat.getMaxTime(), totalTraffic));
                     System.out.println("Количество строк в файле: " + lineNum);
+                System.out.println("Длина самой длинной строки в файле: " + longLine);
+                System.out.println("Длина самой короткой строки в файле: " + shortLine);
+
+
                 double yandexBotsRequestsFract=(double)yandexBotCount/lineNum;
                 double googleBotsRequestsFract=(double)googleBotCount/lineNum;
                 System.out.println("Доля запросов от Яндекс ботов: " + yandexBotsRequestsFract);

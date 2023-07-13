@@ -11,17 +11,19 @@ public class UserAgent {
     }
 
     public UserAgent(String userAgentSep) {
+        String typeOfOs=null;
+        String browser=null;
+        if (userAgentSep.contains("Win")) {typeOfOs="Windows";}
+        if (userAgentSep.contains("Linux")) {typeOfOs="Linux";}
+        if (userAgentSep.contains("Mac")) {typeOfOs="Mac";}
+
+        if (userAgentSep.contains("Firefox/")) {browser="Firefox";}
+        if (userAgentSep.contains("(KHTML, like Gecko)") && userAgentSep.contains("Safari/")) {browser="Chrome";}
+        if (userAgentSep.contains("OPR/")) {browser="Opera";}
+        if (userAgentSep.contains("Edg/")) {browser="Edge";} //в инструкции Edg/ = Edge
+        if (userAgentSep.contains("Mobile/")) {browser="Safari";}
+
         this.typeOfOs = typeOfOs;
         this.browser = browser;
     }
-
-    /*private UserAgent (String userAgentSep){
-        //ff Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion
-        //chrome Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36
-        //opera Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36 OPR/38.0.2220.41
-        //edge Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.59
-        //safari Mozilla/5.0 (iPhone; CPU iPhone OS 13_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.1 Mobile/15E148 Safari/604.1
-
-    }*/
-
 }

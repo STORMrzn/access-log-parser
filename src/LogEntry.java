@@ -1,5 +1,6 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class LogEntry{
     private final String ipAddr;
@@ -42,15 +43,14 @@ public class LogEntry{
         //user-agent
         String ipAddr=line.split(" ")[0];
         //System.out.println(ipAddr);//ip адрес выводится
-        // не работаетString features=line.split("0",1)[0];
+        //String features=line.split("0",1)[0];
         //System.out.println(features);
-        //LocalDateTime dateTime = LocalDateTime.parse(line.substring(line.indexOf("[")+1,line.indexOf("]"));
-        DateTimeFormatter.ofPattern("[dd/mmm/yyyy:hh:mm:ss]"); //погуглил- вроде бы тайм зону не принимает парсер. может и не надо если использоваться будет в 1 тайм зоне?
-        LocalDateTime time=LocalDateTime.parse(line.substring(line.indexOf("[")+1,line.indexOf("]")));
-        System.out.println("123132131321321  " +time);
-
-
-        //System.out.println(LocalDateTime);
+        String localDateTime1=line.substring(line.indexOf("[")+1,line.indexOf("]"));
+        //String[] localDateTime = localDateTime1.split(" \\+");
+        String ll= localDateTime1.replaceAll("\\/", "-");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy:HH:mm:ss Z", Locale.US);
+        LocalDateTime dateTime=LocalDateTime.parse(ll, formatter);
+        //System.out.println(dateTime);
         String method=line.substring(line.indexOf("\"")+1, line.indexOf(" /"));
         //System.out.println(method);
         String splitStatusCode=line.substring(line.indexOf("\" ")+2);
@@ -63,12 +63,13 @@ public class LogEntry{
         //System.out.println(referer); путь к странице
         String[] splitToLast=splitStatusCode.split("\\s+\"");
         String splitUserAgent="\"" + splitToLast[2];
-        //System.out.println(splitUserAgent); userAgent
+
+        UserAgent userAgentOfClients = new UserAgent(splitUserAgent);
 
 
         this.ipAddr = ipAddr;
-        this.time = time;
-        this.method = MethodsHTTP.valueOf(method); //застрял на енаме. как я понимаю - хочу отправить стринг, получить объект класса MethodsHTTP
+        this.time = dateTime;
+        this.method = MethodsHTTP.valueOf(method);
         this.referer = referer;
         this.responseCode = responseCode;
         this.responseSize = responseSize;
