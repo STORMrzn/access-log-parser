@@ -1,10 +1,6 @@
 import java.io.*;
 import java.time.LocalDateTime;
-import java.time.Period;
-import java.util.Arrays;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Main {
     public static void main(String[] args) throws Exceptions {
@@ -38,6 +34,7 @@ public class Main {
                 int yandexBotCount=0;
                 int googleBotCount=0;
                 long totalTraffic=0;
+                int botCount=0;
                 Statistics stat = new Statistics();
                 while ((line = reader.readLine()) != null) {
                     int length = line.length();
@@ -65,8 +62,8 @@ public class Main {
                     totalTraffic += le.getResponseSize();
                     LocalDateTime minTime = null;
                     LocalDateTime maxTime = null;
-                    stat.addEntry(le);
 
+                    stat.addEntry(le);
 
                     //user-agent
                     String ipAddr=line.split(" ")[0];
@@ -85,7 +82,8 @@ public class Main {
                     String responseSize=splitStatusCodeToArray[1];
                     //System.out.println(responseSize); байты
                     String referer=splitStatusCodeToArray[2];
-                    //System.out.println(referer); путь к странице
+                    referer = referer.substring(1, referer.length() - 1);
+                    //System.out.println(referer); //путь к странице
 
                     String[] splitToLast=splitStatusCode.split("\\s+\"");
                     String splitUserAgent="\"" + splitToLast[2];
@@ -108,6 +106,9 @@ public class Main {
                         //отделите в этом фрагменте часть до слэша.
                         String[] withoutSlash=fragment.split("/");
                         String bot=withoutSlash[0];
+                        if (bot.contains("Bot") || bot.contains("bot")) {
+                            botCount++;
+                        };
                         //Определяя равенство найденного фрагмента строкам GoogleBot или YandexBot,
                         // подсчитывайте количество строк в файле, соответствующих запросам от данных ботов.
                         if (bot.matches("YandexBot")) {
@@ -118,10 +119,18 @@ public class Main {
                         }
                     }
                 }
-                System.out.println("Всего трафика: "+totalTraffic);
-                System.out.println("minTime=  "+stat.getMinTime());
-                System.out.println("maxTime=  "+stat.getMaxTime());
-                System.out.println("трафик рейт "+stat.getTrafficRate(stat.getMinTime(), stat.getMaxTime(), totalTraffic));
+
+                System.out.println("Collections #1  " + stat.getPages());
+                System.out.println("Collections #1  " + stat.getUserOS());
+                System.out.println("Stream #1 - среднее кол-во посещей за час без ботов: " + stat.getTrafficRateInHour(lineNum, botCount, stat.getMinTime(), stat.getMaxTime()));
+                System.out.println("Stream #1 - подсчет количества ошибочных запросов в час: " + stat.getErrorCodeInHour(stat.getCode4xxOr5xxCounter(), stat.getMinTime(), stat.getMaxTime()));
+                System.out.println("Stream #1 - подсчет средней посещаемости одним пользователем: " + stat.getAverageVisits(lineNum,botCount));
+
+
+                System.out.println("Всего трафика: " + totalTraffic);
+                System.out.println("minTime=  " + stat.getMinTime());
+                System.out.println("maxTime=  " + stat.getMaxTime());
+                System.out.println("трафик рейт "+ stat.getTrafficRate(stat.getMinTime(), stat.getMaxTime(), totalTraffic));
                     System.out.println("Количество строк в файле: " + lineNum);
                 System.out.println("Длина самой длинной строки в файле: " + longLine);
                 System.out.println("Длина самой короткой строки в файле: " + shortLine);

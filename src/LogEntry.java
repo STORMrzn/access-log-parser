@@ -42,7 +42,6 @@ public class LogEntry{
     public LogEntry (String line) {
         //user-agent
         String ipAddr=line.split(" ")[0];
-        //System.out.println(ipAddr);//ip адрес выводится
         //String features=line.split("0",1)[0];
         //System.out.println(features);
         String localDateTime1=line.substring(line.indexOf("[")+1,line.indexOf("]"));
@@ -60,6 +59,7 @@ public class LogEntry{
         int responseSize = Integer.parseInt(splitStatusCodeToArray[1]);
         //System.out.println(responseSize); байты
         String referer=splitStatusCodeToArray[2];
+        referer = referer.substring(1, referer.length() - 1);
         //System.out.println(referer); путь к странице
         String[] splitToLast=splitStatusCode.split("\\s+\"");
         String splitUserAgent="\"" + splitToLast[2];
