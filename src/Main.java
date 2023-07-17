@@ -126,6 +126,9 @@ public class Main {
                 System.out.println("Stream #1 - подсчет количества ошибочных запросов в час: " + stat.getErrorCodeInHour(stat.getCode4xxOr5xxCounter(), stat.getMinTime(), stat.getMaxTime()));
                 System.out.println("Stream #1 - подсчет средней посещаемости одним пользователем: " + stat.getAverageVisits(lineNum,botCount));
 
+                System.out.println("Stream #2 - подсчет пиковой посещаемости сайта (в секунду)" + stat.getVisitsInSec());
+                System.out.println("Stream #2 - список сайтов, со страниц которых есть ссылки на текущий сайт " + stat.getRefererList()); //не идеальный список. может быть есть какие-то битые адреса ? не придумал как их выявить...
+                System.out.println("Stream #2 - расчёт максимальной посещаемости одним пользователем " + stat.getMaxVisitByOneUserCounter()); //вроде бы по условиям задания ботом являются только те, у кого казано что они бот. а тут у этого ИП адреса не указано ничего
 
                 System.out.println("Всего трафика: " + totalTraffic);
                 System.out.println("minTime=  " + stat.getMinTime());

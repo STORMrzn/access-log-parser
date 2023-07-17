@@ -2,6 +2,9 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+
+import static java.util.stream.Collectors.toMap;
 
 public class Statistics {
     private int totalTraffic;
@@ -15,10 +18,10 @@ public class Statistics {
     private int botCount;
     private long hours;
     private final HashSet<String> uniqueIp = new HashSet<String>();
-
-    public int getCode4xxOr5xxCounter() {
-        return code4xxOr5xxCounter;
-    }
+    private final HashMap<Integer, Integer> visitsInSec = new HashMap<>();
+    private final HashSet<String> refererList = new HashSet<>();
+    private int maxVisitByOneUserCounter;
+    private final HashMap<String, Integer> uniqueVisitOfUsersMap = new HashMap<>();
 
     private int code4xxOr5xxCounter;
 
@@ -56,6 +59,28 @@ public class Statistics {
         }
 
         if (!uniqueIp.contains(le.getIpAddr())) {uniqueIp.add(le.getIpAddr());};
+
+        //Stream #2
+        if (visitsInSec.isEmpty()) {
+                  for (int i = 0; i < 60; i++) {
+              visitsInSec.put(i,0);
+             };
+        };
+        if (!le.getSplitUserAgent().contains("bot") || !le.getSplitUserAgent().contains("Bot")) {
+            visitsInSec.put(le.getTime().getSecond(), visitsInSec.get(le.getTime().getSecond())+1);
+        }
+
+        String refererWithoutProtocol = le.getReferer().substring(le.getReferer().indexOf(".")+1);
+        String [] arrayReferer = refererWithoutProtocol.split("\\/");
+        String domen = arrayReferer[0];
+        refererList.add(domen);
+
+        if (uniqueIp.contains(le.getIpAddr()) && (!le.getSplitUserAgent().contains("bot") || !le.getSplitUserAgent().contains("Bot"))) {
+            if (!uniqueVisitOfUsersMap.containsKey(le.getIpAddr())) {
+                uniqueVisitOfUsersMap.put(le.getIpAddr(), 1);
+            }
+            uniqueVisitOfUsersMap.put(le.getIpAddr(), uniqueVisitOfUsersMap.get(le.getIpAddr())+1);
+        };
     }
 
     public LocalDateTime getMinTime() {
@@ -81,10 +106,13 @@ public class Statistics {
         return listOfOS;
     }
 
+    public int getCode4xxOr5xxCounter() {
+        return code4xxOr5xxCounter;
+    }
+
     //Stream #1
     public double getTrafficRateInHour (int userVisits, int botCount, LocalDateTime minTime, LocalDateTime maxTime) {
         int realUsersCounter = userVisits-botCount;
-        //все часы а не один
         long hours = ChronoUnit.HOURS.between(minTime, maxTime);
         double trafficRateInHour = realUsersCounter/hours;
         return trafficRateInHour;
@@ -102,4 +130,20 @@ public class Statistics {
         return averageVisits;
     }
 
+    public int getMaxVisitByOneUserCounter () {
+        int max = uniqueVisitOfUsersMap.entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue()).get().getValue();
+
+        System.out.println(uniqueVisitOfUsersMap);
+        return max;
+    }
+
+    public HashMap<Integer, Integer> getVisitsInSec() {
+        return visitsInSec;
+    }
+
+    public HashSet<String> getRefererList() {
+        return refererList;
+    }
 }
