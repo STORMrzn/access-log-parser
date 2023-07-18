@@ -10,34 +10,9 @@ public class LogEntry{
     private final int responseCode;
     private final int responseSize;
     private final String splitUserAgent;
+    private UserAgent userAgentOfClients;
 
-    public String getIpAddr() {
-        return ipAddr;
-    }
 
-    public LocalDateTime getTime() {
-        return time;
-    }
-
-    public MethodsHTTP getMethod(String method) {
-        return this.method;
-    }
-
-    public String getReferer() {
-        return referer;
-    }
-
-    public int getResponseCode() {
-        return responseCode;
-    }
-
-    public int getResponseSize() {
-        return responseSize;
-    }
-
-    public String getSplitUserAgent() {
-        return splitUserAgent;
-    }
 
     public LogEntry (String line) {
         //user-agent
@@ -66,7 +41,6 @@ public class LogEntry{
 
         UserAgent userAgentOfClients = new UserAgent(splitUserAgent);
 
-
         this.ipAddr = ipAddr;
         this.time = dateTime;
         this.method = MethodsHTTP.valueOf(method);
@@ -74,8 +48,39 @@ public class LogEntry{
         this.responseCode = responseCode;
         this.responseSize = responseSize;
         this.splitUserAgent = splitUserAgent;
+        this.userAgentOfClients=userAgentOfClients;
+    }
+    public String getIpAddr() {
+        return ipAddr;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    public MethodsHTTP getMethod(String method) {
+        return this.method;
+    }
+
+    public String getReferer() {
+        return referer;
+    }
+
+    public int getResponseCode() {
+        return responseCode;
+    }
+
+    public int getResponseSize() {
+        return responseSize;
+    }
+
+    public String getSplitUserAgent() {
+        return splitUserAgent;
     }
 
 
+    public UserAgent getUserAgentOfClients() {
+        return userAgentOfClients;
+    }
 }
 

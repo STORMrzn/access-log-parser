@@ -12,6 +12,7 @@ public class Statistics {
     private LocalDateTime maxTime;
     private LogEntry le;
     private final HashSet<String> pages = new HashSet<String>();
+
     private final HashSet<String> incorrectPages = new HashSet<String>();
     private final HashMap<String, Integer> listOfOS = new HashMap<>();
     private final HashMap<String, Integer> listOfBrowsers = new HashMap<>();
@@ -23,7 +24,11 @@ public class Statistics {
     private int maxVisitByOneUserCounter;
     private final HashMap<String, Integer> uniqueVisitOfUsersMap = new HashMap<>();
 
+    private final HashMap<String, Double> fractionOS = new HashMap<>();
+    private int osCounter;
+
     private int code4xxOr5xxCounter;
+    private UserAgent ua;
 
 
     public void addEntry(LogEntry le) {
@@ -42,16 +47,36 @@ public class Statistics {
         }
 
         if (le.getResponseCode() == 404 && !le.getReferer().equals("-")) {
-            pages.add(le.getReferer());
+            incorrectPages.add(le.getReferer());
         }
 
         //collections 1
-        //if (getTypeOfOs().matches("Windows")) {listOfOS.put("Windows", listOfOS.get("Windows") + 1);}
-        //else {listOfOS.put("Windows", 0);}
-        //if (ua.getTypeOfOs().matches("Linux")) {listOfOS.put("Linux", listOfOS.get("Linux") + 1);}
-        //else {listOfOS.put("Linux", 0);}
-        //if (ua.getTypeOfOs().matches("Mac")) {listOfOS.put("Mac", listOfOS.get("Mac") + 1);}
-        //else {listOfOS.put("Mac", 0);}
+        ua = le.getUserAgentOfClients();
+
+        if (listOfOS.isEmpty()) {
+            listOfOS.put("Windows", 0);
+            listOfOS.put("Linux", 0);
+            listOfOS.put("Mac", 0);
+        };
+            if (ua.getTypeOfOs() != null)
+            {
+                if (ua.getTypeOfOs().matches("Windows")) {
+                listOfOS.put("Windows", listOfOS.get("Windows") + 1);
+            }
+                if (ua.getTypeOfOs().matches("Linux")) {
+                listOfOS.put("Linux", listOfOS.get("Linux") + 1);
+            }
+                if (ua.getTypeOfOs().matches("Mac")) {
+                listOfOS.put("Mac", listOfOS.get("Mac") + 1);
+            }
+                osCounter = listOfOS.get("Windows") + listOfOS.get("Linux") + listOfOS.get("Mac");
+                fractionOS.put("Windows", (double) (listOfOS.get("Windows")/osCounter));
+                fractionOS.put("Linux", (double) (listOfOS.get("Linux")/osCounter));
+                fractionOS.put("Mac", (double) (listOfOS.get("Mac")/osCounter));
+            }
+
+        //Collections #2
+
 
         //Stream #1
         if (400 < le.getResponseCode()) {
@@ -145,5 +170,16 @@ public class Statistics {
 
     public HashSet<String> getRefererList() {
         return refererList;
+    }
+    public HashMap<String, Double> getFractionOS() {
+        return fractionOS;
+    }
+
+    public int getOsCounter() {
+        return osCounter;
+    }
+
+    public HashSet<String> getIncorrectPages() {
+        return incorrectPages;
     }
 }

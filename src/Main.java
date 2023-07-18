@@ -65,31 +65,6 @@ public class Main {
 
                     stat.addEntry(le);
 
-                    //user-agent
-                    String ipAddr=line.split(" ")[0];
-                    //System.out.println(ipAddr);//ip адрес выводится
-                    // не работаетString features=line.split("0",1)[0];
-                    //System.out.println(features);
-                    String localDateTime1=line.substring(line.indexOf("[")+1,line.indexOf("]"));
-                    String localDateTime = localDateTime1.replaceAll("/", "-");
-                    //System.out.println(LocalDateTime);
-                    String HttpMethod=line.substring(line.indexOf("\"")+1, line.indexOf(" /"));
-                    //System.out.println(HttpMethod);
-                    String splitStatusCode=line.substring(line.indexOf("\" ")+2);
-                    String[] splitStatusCodeToArray=splitStatusCode.split("\\s+");
-                    String responseCode=splitStatusCodeToArray[0];
-                    //System.out.println(statusCode); статус код
-                    String responseSize=splitStatusCodeToArray[1];
-                    //System.out.println(responseSize); байты
-                    String referer=splitStatusCodeToArray[2];
-                    referer = referer.substring(1, referer.length() - 1);
-                    //System.out.println(referer); //путь к странице
-
-                    String[] splitToLast=splitStatusCode.split("\\s+\"");
-                    String splitUserAgent="\"" + splitToLast[2];
-                    //System.out.println(splitUserAgent); userAgent
-
-
                     String[] slashSeparator = line.split("\"");
                     String userAgentSep=slashSeparator[slashSeparator.length-1];
                     int openParenPosition = userAgentSep.indexOf("(");
@@ -122,6 +97,12 @@ public class Main {
 
                 System.out.println("Collections #1  " + stat.getPages());
                 System.out.println("Collections #1  " + stat.getUserOS());
+                //ниже не работает - выводит нули.
+                System.out.println(stat.getOsCounter());
+                System.out.println("Collections #1  Метод рассчитывает долю для каждой операционной системы (от 0 до 1)" + stat.getFractionOS());
+
+                //System.out.println("Collections #2  Метод, который возвращает список всех несуществующих страниц сайта" + stat.getIncorrectPages());
+
                 System.out.println("Stream #1 - среднее кол-во посещей за час без ботов: " + stat.getTrafficRateInHour(lineNum, botCount, stat.getMinTime(), stat.getMaxTime()));
                 System.out.println("Stream #1 - подсчет количества ошибочных запросов в час: " + stat.getErrorCodeInHour(stat.getCode4xxOr5xxCounter(), stat.getMinTime(), stat.getMaxTime()));
                 System.out.println("Stream #1 - подсчет средней посещаемости одним пользователем: " + stat.getAverageVisits(lineNum,botCount));

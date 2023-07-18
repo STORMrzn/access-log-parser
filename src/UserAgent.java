@@ -10,6 +10,7 @@ public class UserAgent {
         return browser;
     }
 
+
     public UserAgent(String userAgentSep) {
         String typeOfOs=null;
         String browser=null;
