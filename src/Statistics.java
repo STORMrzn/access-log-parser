@@ -15,6 +15,7 @@ public class Statistics {
 
     private final HashSet<String> incorrectPages = new HashSet<String>();
     private final HashMap<String, Integer> listOfOS = new HashMap<>();
+
     private final HashMap<String, Integer> listOfBrowsers = new HashMap<>();
     private int botCount;
     private long hours;
@@ -26,7 +27,9 @@ public class Statistics {
 
     private final HashMap<String, Double> fractionOS = new HashMap<>();
     private int osCounter;
+    private int browserCounter;
 
+    private final HashMap<String, Double> fractionBrowser = new HashMap<>();
     private int code4xxOr5xxCounter;
     private UserAgent ua;
 
@@ -77,6 +80,40 @@ public class Statistics {
 
         //Collections #2
 
+        if (listOfBrowsers.isEmpty()) {
+            listOfBrowsers.put("Firefox", 0);
+            listOfBrowsers.put("Chrome", 0);
+            listOfBrowsers.put("Opera", 0);
+            listOfBrowsers.put("Edge", 0);
+            listOfBrowsers.put("Safari", 0);
+        };
+        if (ua.getBrowser() != null)
+        {
+            if (ua.getBrowser().matches("Firefox")) {
+                listOfBrowsers.put("Firefox", listOfBrowsers.get("Firefox") + 1);
+            }
+            if (ua.getBrowser().matches("Chrome")) {
+                listOfBrowsers.put("Chrome", listOfBrowsers.get("Chrome") + 1);
+            }
+            if (ua.getBrowser().matches("Opera")) {
+                listOfBrowsers.put("Opera", listOfBrowsers.get("Opera") + 1);
+            }
+            if (ua.getBrowser().matches("Edge")) {
+                listOfBrowsers.put("Edge", listOfBrowsers.get("Edge") + 1);
+            }
+            if (ua.getBrowser().matches("Opera")) {
+                listOfBrowsers.put("Safari", listOfBrowsers.get("Safari") + 1);
+            }
+        }
+        browserCounter = listOfBrowsers.get("Firefox") + listOfBrowsers.get("Chrome") + listOfBrowsers.get("Opera") +
+                listOfBrowsers.get("Edge") + listOfBrowsers.get("Safari");
+        if (browserCounter != 0) {
+            fractionBrowser.put("Firefox", (double) (listOfBrowsers.get("Firefox") / browserCounter));
+            fractionBrowser.put("Chrome", (double) (listOfBrowsers.get("Chrome") / browserCounter));
+            fractionBrowser.put("Opera", (double) (listOfBrowsers.get("Opera") / browserCounter));
+            fractionBrowser.put("Edge", (double) (listOfBrowsers.get("Edge") / browserCounter));
+            fractionBrowser.put("Safari", (double) (listOfBrowsers.get("Safari") / browserCounter));
+        }
 
         //Stream #1
         if (400 < le.getResponseCode()) {
@@ -181,5 +218,13 @@ public class Statistics {
 
     public HashSet<String> getIncorrectPages() {
         return incorrectPages;
+    }
+
+    public HashMap<String, Integer> getListOfBrowsers() {
+        return listOfBrowsers;
+    }
+
+    public HashMap<String, Double> getFractionBrowser() {
+        return fractionBrowser;
     }
 }

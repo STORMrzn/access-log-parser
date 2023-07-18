@@ -31,10 +31,10 @@ public class Main {
                 int lineNum = 0;
                 int longLine = 0;
                 int shortLine = 0;
-                int yandexBotCount=0;
-                int googleBotCount=0;
-                long totalTraffic=0;
-                int botCount=0;
+                int yandexBotCount = 0;
+                int googleBotCount = 0;
+                long totalTraffic = 0;
+                int botCount = 0;
                 Statistics stat = new Statistics();
                 while ((line = reader.readLine()) != null) {
                     int length = line.length();
@@ -95,21 +95,33 @@ public class Main {
                     }
                 }
 
-                System.out.println("Collections #1  " + stat.getPages());
+                System.out.println("Collections #1  возвращает успешные страницы сайта" + stat.getPages());
                 System.out.println("Collections #1  " + stat.getUserOS());
                 //ниже не работает - выводит нули.
                 System.out.println(stat.getOsCounter());
-                System.out.println("Collections #1  Метод рассчитывает долю для каждой операционной системы (от 0 до 1)" + stat.getFractionOS());
+                System.out.println("Collections #1  Метод рассчитывает долю для каждой операционной системы (от 0 до 1)" +
+                        stat.getFractionOS());
 
-                //System.out.println("Collections #2  Метод, который возвращает список всех несуществующих страниц сайта" + stat.getIncorrectPages());
+                System.out.println("Collections #2  Метод, который возвращает список всех несуществующих страниц сайта" +
+                        stat.getIncorrectPages());
+                System.out.println("Collections #2  возвращает частоту встречаемости браузеров пользователей" +
+                        stat.getListOfBrowsers());
+                //Доли браузеров как и в коллекшен 1 не рассчитываются...
+                System.out.println("Collections #2  доли браузеров " + stat.getFractionBrowser());
 
-                System.out.println("Stream #1 - среднее кол-во посещей за час без ботов: " + stat.getTrafficRateInHour(lineNum, botCount, stat.getMinTime(), stat.getMaxTime()));
-                System.out.println("Stream #1 - подсчет количества ошибочных запросов в час: " + stat.getErrorCodeInHour(stat.getCode4xxOr5xxCounter(), stat.getMinTime(), stat.getMaxTime()));
-                System.out.println("Stream #1 - подсчет средней посещаемости одним пользователем: " + stat.getAverageVisits(lineNum,botCount));
+                System.out.println("Stream #1 - среднее кол-во посещей за час без ботов: " +
+                        stat.getTrafficRateInHour(lineNum, botCount, stat.getMinTime(), stat.getMaxTime()));
+                System.out.println("Stream #1 - подсчет количества ошибочных запросов в час: " +
+                        stat.getErrorCodeInHour(stat.getCode4xxOr5xxCounter(), stat.getMinTime(), stat.getMaxTime()));
+                System.out.println("Stream #1 - подсчет средней посещаемости одним пользователем: " +
+                        stat.getAverageVisits(lineNum,botCount));
 
-                System.out.println("Stream #2 - подсчет пиковой посещаемости сайта (в секунду)" + stat.getVisitsInSec());
-                System.out.println("Stream #2 - список сайтов, со страниц которых есть ссылки на текущий сайт " + stat.getRefererList()); //не идеальный список. может быть есть какие-то битые адреса ? не придумал как их выявить...
-                System.out.println("Stream #2 - расчёт максимальной посещаемости одним пользователем " + stat.getMaxVisitByOneUserCounter()); //вроде бы по условиям задания ботом являются только те, у кого казано что они бот. а тут у этого ИП адреса не указано ничего
+                System.out.println("Stream #2 - подсчет пиковой посещаемости сайта (в секунду)" +
+                        stat.getVisitsInSec());
+                System.out.println("Stream #2 - список сайтов, со страниц которых есть ссылки на текущий сайт " +
+                        stat.getRefererList()); //не идеальный список. может быть есть какие-то битые адреса ? не придумал как их выявить...
+                System.out.println("Stream #2 - расчёт максимальной посещаемости одним пользователем " +
+                        stat.getMaxVisitByOneUserCounter()); //вроде бы по условиям задания ботом являются только те, у кого казано что они бот. а тут у этого ИП адреса не указано ничего
 
                 System.out.println("Всего трафика: " + totalTraffic);
                 System.out.println("minTime=  " + stat.getMinTime());
