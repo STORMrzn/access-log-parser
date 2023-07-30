@@ -175,13 +175,13 @@ public class Statistics {
     //Stream #1
     public double getTrafficRateInHour (int userVisits, int botCount, LocalDateTime minTime, LocalDateTime maxTime) {
         int realUsersCounter = userVisits-botCount;
-        long hours = ChronoUnit.HOURS.between(minTime, maxTime);
+        double hours = ChronoUnit.HOURS.between(minTime, maxTime);
         double trafficRateInHour = realUsersCounter/hours;
         return trafficRateInHour;
     }
 
     public double getErrorCodeInHour (int code4xxOr5xxCounter, LocalDateTime minTime, LocalDateTime maxTime) {
-        long hours = ChronoUnit.HOURS.between(minTime, maxTime);
+        double hours = ChronoUnit.HOURS.between(minTime, maxTime);
         double errorCodeInHour = code4xxOr5xxCounter/code4xxOr5xxCounter;
         return errorCodeInHour;
     }

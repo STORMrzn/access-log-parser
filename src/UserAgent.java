@@ -1,6 +1,8 @@
 public class UserAgent {
     private final String typeOfOs;
     private final String browser;
+    private boolean isBot;
+    private int botCounter;
 
     public String getTypeOfOs() {
         return typeOfOs;
@@ -14,6 +16,7 @@ public class UserAgent {
     public UserAgent(String userAgentSep) {
         String typeOfOs=null;
         String browser=null;
+        int botCounter=0;
         if (userAgentSep.contains("Win")) {typeOfOs="Windows";}
         if (userAgentSep.contains("Linux")) {typeOfOs="Linux";}
         if (userAgentSep.contains("Mac")) {typeOfOs="Mac";}
@@ -26,5 +29,13 @@ public class UserAgent {
 
         this.typeOfOs = typeOfOs;
         this.browser = browser;
+    }
+
+    public boolean isBot(String userAgentSep) {
+        if (userAgentSep.contains("Bot") || userAgentSep.contains("bot")) {
+            isBot = true;
+            System.out.println(isBot);
+        }
+        return false;
     }
 }
